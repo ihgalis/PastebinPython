@@ -8,9 +8,9 @@
 import re
 import requests
 from xml.dom.minidom import parseString
-from pastebin_options import OPTION_PASTE, OPTION_LIST, OPTION_TRENDS, OPTION_DELETE, OPTION_USER_DETAILS
-from pastebin_constants import PASTEBIN_API_POST_URL, PASTEBIN_API_LOGIN_URL, PASTEBIN_RAW_URL
-from pastebin_exceptions import PastebinBadRequestException, PastebinNoPastesException, PastebinFileException, PastebinHTTPErrorException
+from pastebin_python.pastebin_options import OPTION_PASTE, OPTION_LIST, OPTION_TRENDS, OPTION_DELETE, OPTION_USER_DETAILS
+from pastebin_python.pastebin_constants import PASTEBIN_API_POST_URL, PASTEBIN_API_LOGIN_URL, PASTEBIN_RAW_URL, PASTEBIN_URL_SCRAPE
+from pastebin_python.pastebin_exceptions import PastebinBadRequestException, PastebinNoPastesException, PastebinFileException, PastebinHTTPErrorException
 
 
 class PastebinPython(object):
@@ -150,9 +150,9 @@ class PastebinPython(object):
             req = self.api_session.request(method, url, data=data)
 
         response = req.content
-        if re.search('^Bad API request', response):
+        if re.search('^Bad API request', response.decode('utf-8')):
             raise PastebinBadRequestException(response)
-        elif re.search('^No pastes found', response):
+        elif re.search('^No pastes found', response.decode('utf-8')):
             raise PastebinNoPastesException
 
         return response
@@ -394,3 +394,21 @@ class PastebinPython(object):
             retMsg = str(e)
 
         return retMsg.decode('utf-8')
+
+    def scrapeMostRecent(self):
+        """
+        Returns the most recent Pastebin posts. You will need to have an API Key and a whitelisted IP
+        configured on pastebin.com (https://pastebin.com/api_scraping_faq)
+
+        :return: str
+        """
+        try:
+            print("Scraping ... on: " + PASTEBIN_URL_SCRAPE + "/api_scraping.php")
+            data = self.__processRequest('GET',
+                                         PASTEBIN_URL_SCRAPE + "/api_scraping.php",
+                                         None)
+            return data
+        except PastebinBadRequestException as e:
+            retMsg = str(e)
+            print("PastebinBadRequest")
+            return None
