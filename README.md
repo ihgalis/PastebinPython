@@ -32,6 +32,16 @@ You will also need to update your Scraping IP, in order to make it work: [Change
 
 ### 2. pastebin_analyze.py
 
+Once step 1 has finished a cycle you want to analyze whatever there is which is of interest to you. So start writing a keywordlist. One row, one keyword.
+
+When you have finished, start the analze module:
+
+        python pastebin_analyze.py -f <path_to_keyword_file> \
+                                   -mongodbhost <mongo_db_hostname> \   # default: localhost
+                                   -mongodbport <mongo_db_port<         # default: 27017
+                                   
+Finally it will create collections for all of the keywords it found and copy the pastebin into that collection. There might also be empty collections. Sometimes you
+just can't find anything you are searching for :-()       
 ### 3. pastebin_accumulate.py
 
 ### Access Data via Flask API
