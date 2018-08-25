@@ -8,6 +8,7 @@ import urllib.request
 import argparse
 import logging
 import time
+import hashlib
 
 logging.basicConfig(level=logging.INFO,
                     format='%(asctime)s %(levelname)s %(message)s',
@@ -68,11 +69,16 @@ def main(args):
                 json_data = data.decode('utf8')  # .replace("'", '"')
                 final_data = json.loads(json_data)
 
-                # Iterate through list
+                # Iterate through list (standard: 50 latest pastebins)
                 for x in final_data:
 
                     # Pre-create the content key-value pair
                     x['content'] = 0
+
+                    tohash = str(x['date']) + str(x['expire']) + str(x['full_url'] + str(x['key']) + str(x['scrape_url']) + str(x['size']) + str(x['syntax']) + str(x['title']) + str(x['user']))
+                    hobject = hashlib.sha256(tohash.encode())
+                    hash_string = str(hobject.hexdigest())
+                    x['identityhash'] = hash_string
 
                     copy_of_x = deepcopy(x)
                     for key, value in copy_of_x.items():
@@ -81,18 +87,22 @@ def main(args):
 
                             # value = scrape_url
                             text_encoded = call_scrape_url(value)
-                            time.sleep(1)
-
-                            logger.info("Downloading content of " + value)
 
                             # Add content
                             x['content'] = text_encoded
 
-                            ## TODO: Add some identity check
+                            logger.info("Downloading content of " + value)
+                            time.sleep(1)
 
-                            # DB Save mode args['db'] == 2
                             if args['db'] == "1":
-                                db.pastebins.insert_one(x)
+
+                                # save only if the hash is not found in the db
+                                if db.pastebins.find_one({ "identityhash": x['identityhash'] },{ "identityhash": 1}):
+                                    logger.info("Iteam already scraped: " + x['scrape_url'])
+                                else:
+                                    logger.info("Item added to db: " + x['scrape_url'])
+                                    db.pastebins.insert_one(x)
+
             else:
                 logger.debug("No data arrived.")
 
