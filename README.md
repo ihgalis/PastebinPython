@@ -28,7 +28,11 @@ For this one to work good you need an API key. I bought a lifetime access to the
 
 You will also need to update your Scraping IP, in order to make it work: [Change Scraping IP](https://pastebin.com/doc_scraping_api)
 
-        python pastebin_scrape.py -v 1 -db 1 -api <YOUR_PASTE_BIN_API_KEY>
+        python pastebin_scrape.py -v 1 \                                # verbose mode
+                                  -db 1 \                               # save to DB (without this, nothing will be saved)
+                                  -api <YOUR_PASTE_BIN_API_KEY> \
+                                  -mongodbhost <mongo_db_hostname> \    # default: localhost
+                                  -mongodbport <mongo_db_port> \        # default: 27017
 
 ### 2. pastebin_analyze.py
 
