@@ -13,6 +13,13 @@ logger = logging.getLogger(__name__)
 
 
 def main():
+    """
+    starts the entire process of analyzation by creating new collections and appending new documents into existing
+    collections based on keywords.
+
+    :return:
+    """
+
     client = MongoClient(str(args['mongodbhost']), int(args['mongodbport']))
     db = client.scrape
     logger.info("MongoDB Connection created")

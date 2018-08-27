@@ -20,8 +20,6 @@ The results will be saved within a MongoDB collection. Another script will be tr
 
 The second step results in new collections where each keyword gets one new collection and all found pastebin entries will be copied there.
 
-The third step might be the accumulator. It identifies specific words (similiar to step 2) but also specials like eMail addresses, Bitcoin addresses, URLs, IP Adresses etc. 
-
 ### 1. pastebin_scrape.py
 
 For this one to work good you need an API key. I bought a lifetime access to the pastebin API a while ago for 29,99 USD. It doesn't make you poor.
@@ -32,7 +30,7 @@ You will also need to update your Scraping IP, in order to make it work: [Change
                                   -db 1 \                               # save to DB (without this, nothing will be saved)
                                   -api <YOUR_PASTE_BIN_API_KEY> \
                                   -mongodbhost <mongo_db_hostname> \    # default: localhost
-                                  -mongodbport <mongo_db_port> \        # default: 27017
+                                  -mongodbport <mongo_db_port>          # default: 27017
 
 ### 2. pastebin_analyze.py
 
@@ -42,19 +40,20 @@ When you have finished, start the analze module:
 
         python pastebin_analyze.py -f <path_to_keyword_file> \
                                    -mongodbhost <mongo_db_hostname> \   # default: localhost
-                                   -mongodbport <mongo_db_port<         # default: 27017
+                                   -mongodbport <mongo_db_port>         # default: 27017
                                    
 Finally it will create collections for all of the keywords it found and copy the pastebin into that collection. There might also be empty collections. Sometimes you
-just can't find anything you are searching for :-()       
-### 3. pastebin_accumulate.py
+just can't find anything you are searching for.
 
 ### Access Data via Flask API
 
 Finally you can either write yourself a clean data retriever or you can use this Flask API implementation here:
 
 ```
-# start it in debug and verbose mode first!
-python pastebin_api.py -d -v
+# start it in debug mode first!
+python pastebin_api.py -d \
+                       -mongodbhost <mongo_db_hostname> \
+                       -mongodbport <mongo_db_port> 
 ```
 
 Well there is only one API method. Grab yourself a browser or use curl:
