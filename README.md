@@ -4,12 +4,20 @@ The scraper here is based on the one from [six519](https://github.com/six519/Pas
 
 ## Installation
 
-Simply clone it:
+### Via Github
 
 ```
 cd /your/desired/directory
 clone https://github.com/six519/PastebinPython.git
 pip install -r requirements.txt
+```
+
+### Via pypi
+
+In this case you have to import the corresponding classes and methods to use it. I will try and make it somehow more usable this way. Just wanted to play around with pypi at first.
+
+```
+pip install pastebin-python-scraper
 ```
 
 ## Usage
