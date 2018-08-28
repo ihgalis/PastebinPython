@@ -1,14 +1,14 @@
-"""A complete pastebin.com API wrapper for Python
-
-.. moduleauthor:: Ferdinand Silva <ferdinandsilva@ferdinandsilva.com>
+"""
+A complete pastebin.com API wrapper for Python.
+Fork from Ferdinand Silva.
 
 """
 from pastebin_python.pastebin import PastebinPython
 
-__version__ = "1.2"
-__app_name__ = "pastebin_python"
+__version__ = "1.2.1"
+__app_name__ = "pastebin_python_scraper"
 __description__ = "A complete pastebin.com API wrapper for Python"
-__author__ = "Ferdinand Silva"
-__author_email__ = "ferdinandsilva@ferdinandsilva.com"
-__app_url__ = "http://ferdinandsilva.com"
-__download_url__ = "https://github.com/six519/PastebinPython"
+__author__ = "André Fritsche"
+__author_email__ = "github@andresilaghi.com"
+__app_url__ = "https://www.andresilaghi.com"
+__download_url__ = "https://github.com/ihgalis/PastebinPython"
